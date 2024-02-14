@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>circlesplot</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">circlesplot</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>The <strong>circlesplot</strong> library helps you display
+proportions between different objects. Say earth is 3.6 times bigger
+than the moon. How can you visualize that? It would be helpful if you
+could draw earth and moon with their exact diameter to make your readers
+aware of the difference in size. This is where the lib comes into play.
+It plots two circles with the given diameter next to each other, so
+readers can observe the ratio. Although it is extremely helpful to
+visualize planets, it can also be used for other things too.</p>
+<p>The first step to visualize proportions will be to include the
+library:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(circlesplot)</span></code></pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+</div>
+<div id="basic-plotting" class="section level2">
+<h2>Basic plotting</h2>
+<p>To actually plot something, we need some data and associated labels.
+Note that both vectors are required and should have the same size.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>diameter <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">4879.4</span>,<span class="fl">12103.6</span>,<span class="fl">12756.3</span>,<span class="fl">6792.4</span>,<span class="dv">142984</span>,<span class="dv">120536</span>,<span class="dv">51118</span>,<span class="dv">49528</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>planets <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&#39;Mercury&#39;</span>,<span class="st">&#39;Venus&#39;</span>,<span class="st">&#39;Earth&#39;</span>,<span class="st">&#39;Mars&#39;</span>,<span class="st">&#39;Jupiter&#39;</span>,<span class="st">&#39;Saturn&#39;</span>,<span class="st">&#39;Uranus&#39;</span>,<span class="st">&#39;Neptune&#39;</span>)</span></code></pre></div>
+<p>Now we can plot it:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L)</span></code></pre></div>
+<div id="further-adjustments" class="section level3">
+<h3>Further adjustments</h3>
+<p>The <em>cp_max</em> parameter is an integer that should be at least
+1. It specifies how many circles or planets should be in a row. A
+<em>cp_max=3L</em> with 8 planets would result in a plot with circles
+arranged like:</p>
+<pre><code>A B C
+D E F
+G H</code></pre>
+<p>A <em>cp_max=4L</em> with 8 planets would result in a plot with
+circles arranged like:</p>
+<pre><code>A B C D
+E F G H</code></pre>
+<p><strong>NOTE</strong>: The <em>cp_max</em> parameter is optional. If
+you leave it blank, it will set the default number of circles in a row
+to <strong>10</strong>.</p>
+</div>
+<div id="color" class="section level3">
+<h3>Color</h3>
+<p>Now we want to add some color. This can be done via the
+<em>cp_color</em> parameter. You specify colors like this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>colors <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&#39;#D1BBD7&#39;</span>, <span class="st">&#39;#AE76A3&#39;</span>, <span class="st">&#39;#882E72&#39;</span>, <span class="st">&#39;#1965B0&#39;</span>, <span class="st">&#39;#5289C7&#39;</span>, <span class="st">&#39;#7BAFDE&#39;</span>, <span class="st">&#39;#4EB265&#39;</span>, <span class="st">&#39;#90C987&#39;</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L, <span class="at">cp_color=</span>colors)</span></code></pre></div>
+<p>If you want to use a special color scheme like <em>viridis</em>, you
+have to include the package</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">library</span>(viridis)</span></code></pre></div>
+<p>and set the parameter <em>cp_color</em>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L, <span class="at">cp_color=</span><span class="fu">viridis</span>(<span class="dv">8</span>))</span></code></pre></div>
+<p><strong>NOTE</strong>: Every circle has to have a color. So the
+color-vector has to have the same length as the vectors
+<em>diameter</em> and <em>planets</em>.</p>
+<p><strong>NOTE</strong>: The <em>cp_color</em> parameter is optional.
+If you leave it blank, it will set all colors to white (#FFFFFF).</p>
+</div>
+<div id="title" class="section level3">
+<h3>Title</h3>
+<p>The title can be set via <em>cp_title</em>. To increase the size of
+the title, use <em>cp_title_size</em>, e.g.:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L, <span class="at">cp_color=</span><span class="fu">viridis</span>(<span class="dv">8</span>), <span class="at">cp_title=</span><span class="st">&quot;Planets&quot;</span>, <span class="at">cp_title_size=</span><span class="dv">4</span>)</span></code></pre></div>
+<p><strong>NOTE</strong>: Both parameters are optional. If you leave
+them blank, <em>cp_title</em> will be left blank and
+<em>cp_title_size</em> will be set to 1.5.</p>
+</div>
+<div id="circles" class="section level3">
+<h3>Circles</h3>
+<p>You can modify the line width / thickness of the circles with the
+<em>cp_line_width</em> parameter:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L, <span class="at">cp_color=</span><span class="fu">viridis</span>(<span class="dv">8</span>), <span class="at">cp_title=</span><span class="st">&quot;Planets&quot;</span>, <span class="at">cp_title_size=</span><span class="dv">2</span>, <span class="at">cp_line_width=</span>3L)</span></code></pre></div>
+<p><strong>NOTE</strong>: The <em>cp_line_width</em> parameter is
+optional. If you leave it blank, it will be set to 2L.</p>
+</div>
+<div id="result" class="section level3">
+<h3>Result</h3>
+<p>The final plot would look like this:</p>
+<div class="float">
+<img src="data:image/png;base64,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" width="600" alt="final plot, png-format" />
+<div class="figcaption">final plot, png-format</div>
+</div>
+</div>
+<div id="return-value" class="section level3">
+<h3>Return value</h3>
+<p>The <em>circlesplot</em>-function returns a recordedPlot-object.
+Therefore, you can save a plot to a variable and later plot the
+circlesplot:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>cp <span class="ot">&lt;-</span> <span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L, <span class="at">cp_color=</span><span class="fu">viridis</span>(<span class="dv">8</span>), <span class="at">cp_title=</span><span class="st">&quot;Planets&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>cp</span></code></pre></div>
+</div>
+<div id="exporting" class="section level3">
+<h3>Exporting</h3>
+<p>You may observe that the output in <em>RStudio</em> lacks some
+quality, especially the rounding of the circles. If you export it as
+<em>png-file</em>, it will stay like that. The recommendation is to
+export the plot as a <em>pdf-file</em> which has better quality.</p>
+<p><strong>ATTENTION</strong>: You may see something unexpected in
+<em>RStudio</em>: When you create the plot and it is displayed in the
+lower right window (in the plots tab), it seems like that a part of the
+plot is cut off but this happens only due to the size of the lower right
+window. Either resize it or use the following r code to save the plot as
+<em>pdf</em>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&quot;path/to/your/pdf/plot1.pdf&quot;</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">circlesplot</span>(<span class="at">cp_vals=</span>diameter, <span class="at">cp_text=</span>planets, <span class="at">cp_max=</span>4L, <span class="at">cp_color=</span><span class="fu">viridis</span>(<span class="dv">8</span>), <span class="at">cp_title=</span><span class="st">&quot;Planets&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="fu">dev.off</span>() </span></code></pre></div>
+</div>
+</div>
+<div id="help" class="section level2">
+<h2>Help</h2>
+<p>If you need help or want to report an issue, request a new feature,
+please visit <a href="https://github.com/BenSt099/circlesplot">Github</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
