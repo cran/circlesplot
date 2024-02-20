@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/BenSt099/circlesplot/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/BenSt099/circlesplot/actions/workflows/R-CMD-check.yaml)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/circlesplot)](https://cran.r-project.org/package=circlesplot)
 <!-- badges: end -->
 
 ## Overview
@@ -21,11 +22,17 @@ also be used for other things too.
 
 ## Installation
 
-You can install the development version of **circlesplot** from
-[GitHub](https://github.com/) with:
+Install the latest version from **CRAN**:
 
 ``` r
-# install.packages("devtools")
+install.packages("circlesplot")
+```
+
+or the development version from
+[GitHub](https://github.com/BenSt099/circlesplot):
+
+``` r
+install.packages("devtools")
 devtools::install_github("BenSt099/circlesplot")
 ```
 
@@ -40,7 +47,7 @@ library('viridis')
 planets = c('Mercury','Venus','Earth','Mars','Jupiter','Saturn','Uranus','Neptune')
 diameter = c(4879.4,12103.6,12756.3,6792.4,142984,120536,51118,49528)
 
-circlesplot(cp_vals=diameter, cp_text=planets, cp_max=4L, cp_title="Planets", cp_color=viridis(8))
+circlesplot(cp_vals=diameter, cp_text=planets, cp_max=4L, cp_title="Planets", cp_color=viridis(8), cp_sort='desc')
 ```
 
 <img src="man/figures/README-example.png" width="400"
@@ -55,13 +62,13 @@ The left plot is exported as *png*, while the right is exported as
 
 You may see something unexpected in *RStudio*: When you create the plot
 and it is displayed in the lower right window (in the plots tab), it
-seems like that a part of the plot is cut off but this happens only due
-to the size of the lower right window. Either resize it or use the
-following r code to save the plot as *pdf*:
+seems like that a part of the plot is cut off or it’s displayed very
+small. This only happens due to the size of the lower right window.
+Either resize it or use the following r code to save the plot as *pdf*:
 
 ``` r
 pdf("path/to/your/pdf/plot1.pdf")
-circlesplot(cp_vals=diameter, cp_text=planets, cp_max=4L, cp_color=viridis(8), cp_title="Planets")
+circlesplot(cp_vals=diameter, cp_text=planets, cp_max=4L, cp_color=viridis(8), cp_title="Planets", cp_sort='desc')
 dev.off() 
 ```
 
